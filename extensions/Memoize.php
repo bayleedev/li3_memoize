@@ -1,6 +1,6 @@
 <?php
 
-namespace li3_analytics\extensions;
+namespace li3_memoize\extensions;
 
 /**
  * Main Memoize class helps add the filters to the specific libraries
@@ -47,6 +47,7 @@ class Memoize extends \lithium\core\Adaptable {
 				self::$instances[] = $hash;
 				$helperName = $method['namespace'] . $method['name'];
 				$helperName::applyFilter($method['method'], $params, function($self, $params, $chain) {
+					echo 1;
 					return $chain->next($self, $params, $chain);
 				})
 			}
