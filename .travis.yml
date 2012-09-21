@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+
+before_install:
+  - cd ../
+  - git clone git://github.com/UnionOfRAD/framework.git
+  - mv li3_memoize/ framework/app/libraries/li3_memoize
+  - cd framework
+  - git submodule update --init --recursive
+  - cd app/libraries/li3_memoize
+
+script: ../../../libraries/lithium/console/li3 test tests
