@@ -3,7 +3,7 @@
 namespace li3_memoize\extensions\adapter\storage\cache;
 
 /**
- * Memoize
+ * MemoizerProxy
  *
  * This class was developed to aid in caching expensive method calls.
  * Pass any object into the constructor and use it to directly proxy method calls.

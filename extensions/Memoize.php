@@ -5,6 +5,8 @@ namespace li3_memoize\extensions;
 use li3_memoize\extensions\adapter\storage\cache\MemoizerProxy;
 
 /**
+ * Memoize
+ * 
  * Main Memoize class helps add the filters to the specific libraries.
  * 
  * This is the interface that bootstrap will use to add specific helpers/methods to our list.
