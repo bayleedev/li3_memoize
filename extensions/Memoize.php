@@ -37,7 +37,7 @@ class Memoize extends \lithium\core\Adaptable {
 	public static function add(array $methods) {
 		foreach($methods as $method) {
 			// Init array
-			if(!self::$objectNames[$method['name']]) {
+			if(!isset(self::$objectNames[$method['name']])) {
 				self::$objectNames[$method['name']] = array();
 			}
 			// append to array
