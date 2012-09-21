@@ -14,11 +14,32 @@ class MemoizeTest extends \lithium\test\Unit {
 	/**
 	 * Will return the protected/private variables
 	 */
-	protected function getVariables($name) {
+	protected function getVariable($name) {
 		if(!isset($this->reflectionClass)) {
-			$this->reflectionClass = new ReflectionClass($this->class);
+			$this->reflectionClass = new \ReflectionClass($this->class);
 		}
-		return $this->reflectionClass->getStaticPropertyValue($name);
+		$prop = $this->reflectionClass->getProperty($name);
+		$prop->setAccessible(true);
+		return $prop->getValue($this->reflectionClass);
+	}
+
+	/**
+	 * Will update the protected/private variables
+	 */
+	protected function setVariable($name, $value) {
+		if(!isset($this->reflectionClass)) {
+			$this->reflectionClass = new \ReflectionClass($this->class);
+		}
+		$prop = $this->reflectionClass->getProperty($name);
+		$prop->setAccessible(true);
+		return $prop->setValue($this->reflectionClass, $value);
+	}
+
+	/**
+	 * Will tear down the current object
+	 */
+	public function tearDown() {
+		$this->setVariable('objectNames', array());
 	}
 
 	public function testBasicAdd() {
@@ -28,10 +49,11 @@ class MemoizeTest extends \lithium\test\Unit {
 				'method' => array('init')
 			)
 		));
-		$result = $this->getVariables('objectNames');
+		$result = $this->getVariable('objectNames');
 		$this->assertEqual(array(
-			'name' => 'li3_memoize\tests\mocks\Prose',
-			'method' => array('init')
+			'li3_memoize\tests\mocks\Prose' => array(
+				'init'
+			)
 		), $result);
 	}
 
@@ -46,10 +68,11 @@ class MemoizeTest extends \lithium\test\Unit {
 				'method' => array('list')
 			)
 		));
-		$result = $this->getVariables('objectNames');
+		$result = $this->getVariable('objectNames');
 		$this->assertEqual(array(
-			'name' => 'li3_memoize\tests\mocks\Prose',
-			'method' => array('init', 'list')
+			'li3_memoize\tests\mocks\Prose' => array(
+				'init', 'list'
+			)
 		), $result);
 	}
 
@@ -66,10 +89,11 @@ class MemoizeTest extends \lithium\test\Unit {
 				'method' => array('list')
 			)
 		));
-		$result = $this->getVariables('objectNames');
+		$result = $this->getVariable('objectNames');
 		$this->assertEqual(array(
-			'name' => 'li3_memoize\tests\mocks\Prose',
-			'method' => array('init', 'list')
+			'li3_memoize\tests\mocks\Prose' => array(
+				'init', 'list'
+			)
 		), $result);
 	}
 
