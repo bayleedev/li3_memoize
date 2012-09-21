@@ -20,14 +20,11 @@ class Memoize extends \lithium\core\Adaptable {
 	 * The namespace key is optional and will be written as "app/extensions/helper" if not provided.
 	 * 
 	 * ```php
+	 * use li3_memoize\extensions\Memoize;
 	 * Memoize::add(array(
 	 * 	array(
-	 * 		'name' => 'app\extensions\helper\BreadCrumbs',
-	 * 		'method' => 'render'
-	 * 	),
-	 * 	array(
-	 * 		'name' => 'app\extensions\helper\BreadCrumbs',
-	 * 		'method' => array('render', 'init')
+	 * 		'name' => 'app\extensions\helper\Prose',
+	 * 		'method' => array('init')
 	 * 	)
 	 * ));
 	 * ```
