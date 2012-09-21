@@ -12,7 +12,7 @@ class Memoize extends \lithium\core\Adaptable {
 	/**
 	 * Holds the names of objects and methods we want to memoize
 	 */
-	protected static $objectNames = array();
+	public static $objectNames = array();
 
 	/**
 	 * Will add the filter for the specific $methods.
@@ -40,6 +40,7 @@ class Memoize extends \lithium\core\Adaptable {
 			// append to array
 			self::$objectNames[$method['name']] += (array)$method['method'];
 		}
+		return;
 	}
 
 	/**
