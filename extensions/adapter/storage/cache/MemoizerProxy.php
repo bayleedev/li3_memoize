@@ -12,7 +12,7 @@ class MemoizerProxy extends \lithium\template\Helper {
 	/**
 	 * This is where the results are stored.
 	 */
-	protected $_memoizeResults = [];
+	protected $_memoizeResults = array();
 
 	/**
 	 * A copy of the helper we are proxying
@@ -54,7 +54,7 @@ class MemoizerProxy extends \lithium\template\Helper {
 
 		// Create array if it doesn't exist
 		if(!isset($this->_memoizeResults[$method])) {
-			$this->_memoizeResults[$method] = [];
+			$this->_memoizeResults[$method] = array();
 		}
 
 		// Check if method + params have been ran already
