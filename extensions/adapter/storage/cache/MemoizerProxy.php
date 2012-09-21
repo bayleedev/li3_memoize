@@ -7,12 +7,25 @@ namespace li3_memoize\extensions\adapter;
  *
  * This class was developed to aid in caching expensive method calls.
  */
-class Memoizer extends \lithium\template\Helper {
+class MemoizerProxy extends \lithium\template\Helper {
 
     /**
      * This is where the results are stored.
      */
     protected $_memoizeResults = [];
+
+    /**
+     * A copy of the helper we are proxying
+     */
+    protected $helper;
+
+    /**
+     * The constructor will accept the helper and cache it.
+     * @param object $helper 
+     */
+    public function __construct($helper) {
+        $this->helper = $helper;
+    }
 
     /**
      * __call
@@ -24,19 +37,21 @@ class Memoizer extends \lithium\template\Helper {
      * @return mixed
      */
     public function __call($method, $params) {
+        // Eval
         $key = $this->_getHash($params);
-        $method = $this->_getMethod($method);
+
+        // Create array if it doesn't exist
         if(!isset($this->_memoizeResults[$method])) {
             $this->_memoizeResults[$method] = [];
         }
+
+        // Check if method + params have been ran already
         if(isset($this->_memoizeResults[$method][$key])) {
             return $this->_memoizeResults[$method][$key];
         }
-        if($method === false) {
-            throw new BadMethodCallException();
-            return;
-        }
-        return ($this->_memoizeResults[$method][$key] = call_user_func_array(array($this, $method), $params));
+
+        // Get results
+        return ($this->_memoizeResults[$method][$key] = call_user_func_array(array($this->helper, $method), $params));
     }
 
     /**
@@ -51,25 +66,5 @@ class Memoizer extends \lithium\template\Helper {
      */
     protected function _getHash($data) {
         return md5(serialize(func_get_args()));
-    }
-
-    /**
-     * _getMethod
-     *
-     * You input the "cahced" version of the method and it'll return the real method name, or false if it doesn't exist.
-     *
-     * This was put into it's own method so that it can be overwritten by your class if you'd like to improve/simplify it.
-     *
-     * @param string $method
-     * @return string
-     */
-    protected function _getMethod($method) {
-        $hasTop = (substr($method, 0, 1) == "_");
-        $method = substr($method, 1);
-        $methodExists = (method_exists($this, $method));
-        if($hasTop && $methodExists) {
-            return $method;
-        }
-        return false;
     }
 }
