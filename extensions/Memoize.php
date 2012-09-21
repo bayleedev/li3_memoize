@@ -38,7 +38,7 @@ class Memoize extends \lithium\core\Adaptable {
 				self::$objectNames[$method['name']] = array();
 			}
 			// append to array
-			self::$objectNames[$method['name']] += (array)$method['method'];
+			self::$objectNames[$method['name']] = array_merge(self::$objectNames[$method['name']], (array)$method['method']);
 		}
 		return;
 	}
