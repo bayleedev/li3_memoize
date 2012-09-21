@@ -2,15 +2,17 @@
 
 namespace li3_memoize\extensions;
 
+use li3_memoize\extensions\adapter\storage\cache\MemoizerProxy;
+
 /**
  * Main Memoize class helps add the filters to the specific libraries
  */
 class Memoize extends \lithium\core\Adaptable {
 
 	/**
-	 * Holds an instance of every item we are already filtering.
+	 * Holds the names of objects and methods we want to memoize
 	 */
-	protected static $instances = array();
+	protected static $objectNames = array();
 
 	/**
 	 * Will add the filter for the specific $methods.
@@ -20,44 +22,41 @@ class Memoize extends \lithium\core\Adaptable {
 	 * ```php
 	 * Memoize::add(array(
 	 * 	array(
-	 * 		'namespace' => 'app\extensions\helper\',
-	 * 		'name' => 'BreadCrumbs',
+	 * 		'name' => 'app\extensions\helper\BreadCrumbs',
 	 * 		'method' => 'render'
+	 * 	),
+	 * 	array(
+	 * 		'name' => 'app\extensions\helper\BreadCrumbs',
+	 * 		'method' => array('render', 'init')
 	 * 	)
 	 * ));
 	 * ```
+	 * 
+	 * @param array $methods
 	 */
 	public static function add(array $methods) {
 		foreach($methods as $method) {
-
-			//  Update namespace
-			if(isset($method['namespace'])) {
-				// Default namespace
-				$method['namespace'] = 'app\extensions\helper\\';
-			} elseif(substr($method['namespace'], -1) !== '\\') {
-				// Append backslash
-				$method['namespace'] .= '\\';
+			// Init array
+			if(!self::$objectNames[$method['name']]) {
+				self::$objectNames[$method['name']] = array();
 			}
-
-			// Generate hash
-			$hash = forward_static_call_array(self, '_generateMethodHash'), $method);
-			
-			// Search and add
-			if(!in_array($hash, self::$instances)) {
-				self::$instances[] = $hash;
-				$helperName = $method['namespace'] . $method['name'];
-				$helperName::applyFilter($method['method'], $params, function($self, $params, $chain) {
-					echo 1;
-					return $chain->next($self, $params, $chain);
-				})
-			}
+			// append to array
+			self::$objectNames[$method['name']] += (array)$method['method'];
 		}
 	}
 
 	/**
-	 * Will generate a unique hash for the helper/method combination
+	 * Will proxy the given object if in the static $objectNames variable.
+	 * 
+	 * @param string $type 
+	 * @param object $object 
+	 * @return object A new MemoizerProxy object or the original object
 	 */
-	protected static function _generateMethodHash() {
-		return md5(serialize(func_get_args()));
+	public static function instance($type, $object) {
+		$class = get_class($object);
+		if(isset(self::$objectNames[$class])) {
+			return new MemoizerProxy($object, self::$objectNames[$class]);
+		}
+		return $object;
 	}
 }
