@@ -17,7 +17,7 @@ class MemoizerProxyTest extends \lithium\test\Unit {
 		$reflectionClass = new \ReflectionClass($obj);
 		$prop = $reflectionClass->getProperty($name);
 		$prop->setAccessible(true);
-		return $prop->getValue($reflectionClass);
+		return $prop->getValue($obj);
 	}
 
 	public function testFilteredInstanceMethods() {
@@ -64,7 +64,7 @@ class MemoizerProxyTest extends \lithium\test\Unit {
 
 		$expected = 'Hello, World';
 
-		$result = $prose->speakSlow($expected);
+		$result = $prose->slowSpeak($expected);
 
 		$this->assertEqual($expected, $result);
 	}
@@ -86,11 +86,11 @@ class MemoizerProxyTest extends \lithium\test\Unit {
 
 		$times[0] = microtime(true);
 
-		$results[0] = $prose->speakSlow($words);
+		$results[0] = $prose->slowSpeak($words);
 
 		$times[1] = microtime(true);
 
-		$results[1] = $prose->speakSlow($words);
+		$results[1] = $prose->slowSpeak($words);
 
 		$times[2] = microtime(true);
 

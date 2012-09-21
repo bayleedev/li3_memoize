@@ -36,8 +36,11 @@ class MemoizeTest extends \lithium\test\Unit {
 	}
 
 	/**
-	 * Will tear down the current object
+	 * Will setup/tear down the current object
 	 */
+	public function setUp() {
+		$this->tearDown();
+	}
 	public function tearDown() {
 		$this->setVariable('objectNames', array());
 	}
