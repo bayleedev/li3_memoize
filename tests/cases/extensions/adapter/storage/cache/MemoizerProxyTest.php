@@ -1,6 +1,6 @@
 <?php
 
-namespace li3_memoize\tests\cases\extensions;
+namespace li3_memoize\tests\cases\extensions\adapter\storage\cache;
 
 use li3_memoize\extensions\Memoize;
 use li3_memoize\tests\mocks\Prose;
@@ -14,7 +14,7 @@ class MemoizerProxyTest extends \lithium\test\Unit {
 	 * Will return the protected/private variables
 	 */
 	protected function getVariables($obj, $name) {
-		$reflectionClass = new ReflectionClass($obj);
+		$reflectionClass = new \ReflectionClass($obj);
 		$prop = $reflectionClass->getProperty($name);
 		$prop->setAccessible(true);
 		return $prop->getValue($reflectionClass);
