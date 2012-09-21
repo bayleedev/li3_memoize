@@ -1,6 +1,6 @@
 <?php
 
-namespace li3_memoize\extensions\adapter;
+namespace li3_memoize\extensions\adapter\storage\cache;
 
 /**
  * Memoize
