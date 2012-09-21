@@ -20,11 +20,17 @@ class MemoizerProxy extends \lithium\template\Helper {
     protected $helper;
 
     /**
+     * A list of methods that need to be filtered
+     */
+    protected $methods = array();
+
+    /**
      * The constructor will accept the helper and cache it.
      * @param object $helper 
      */
-    public function __construct($helper) {
+    public function __construct($helper, &$methods) {
         $this->helper = $helper;
+        $this->methods = $methods;
     }
 
     /**
@@ -37,6 +43,7 @@ class MemoizerProxy extends \lithium\template\Helper {
      * @return mixed
      */
     public function __call($method, $params) {
+
         // Eval
         $key = $this->_getHash($params);
 
