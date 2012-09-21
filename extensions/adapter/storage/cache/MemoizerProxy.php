@@ -44,6 +44,11 @@ class MemoizerProxy extends \lithium\template\Helper {
 	 */
 	public function __call($method, $params) {
 
+		// To filter or not to filter. That is the question
+		if(!in_array($method, $this->methods)) {
+			return call_user_func_array(array($this->helper, $method), $params);
+		}
+
 		// Eval
 		$key = $this->_getHash($params);
 
