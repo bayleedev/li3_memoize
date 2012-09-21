@@ -5,7 +5,11 @@ namespace li3_memoize\extensions;
 use li3_memoize\extensions\adapter\storage\cache\MemoizerProxy;
 
 /**
- * Main Memoize class helps add the filters to the specific libraries
+ * Main Memoize class helps add the filters to the specific libraries.
+ * 
+ * This is the interface that bootstrap will use to add specific helpers/methods to our list.
+ * We then filter the creation of helpers (li3_memoize/config/bootstrap.php) and pass them through Memoize::instance
+ * Once in it'll either return the same object or a new instance of MemoizerProxy.
  */
 class Memoize extends \lithium\core\Adaptable {
 
