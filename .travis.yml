@@ -10,6 +10,7 @@ before_install:
   - mv li3_memoize/ framework/app/libraries/li3_memoize
   - cd framework
   - git submodule update --init --recursive
-  - cd app/libraries/li3_memoize
+  - cd libraries/lithium/ && git pull origin master
+  - cd ../../app/libraries/li3_memoize
 
 script: ../../../libraries/lithium/console/li3 test tests
