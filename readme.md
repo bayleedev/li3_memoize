@@ -1,6 +1,6 @@
-# Helper caching plugin for [Lithium PHP](http://lithify.me)
+# Helper/Model caching plugin for [Lithium PHP](http://lithify.me)
 
-Will aid in the caching of expensive helpers.
+Will aid in the caching of expensive helper/model instance methods.
 
 [![Build Status](https://secure.travis-ci.org/BlaineSch/li3_memoize.png?branch=master)](http://travis-ci.org/BlaineSch/li3_memoize)
 
@@ -28,4 +28,20 @@ In `app/config/bootstrap/libraries.php` add:
 <?php
 	Libraries::add('li3_memoize');
 ?>
+~~~
+
+### Tell it which instance methods to cache
+~~~ php
+<?php
+use li3_memoize\extensions\Memoize;
+Memoize::add(array(
+	array(
+		'name' => 'app\extensions\helper\Prose',
+		'method' => array('init')
+	),
+	array(
+		'name' => 'app\models\Users',
+		'method' => array('name')
+	),
+));
 ~~~
