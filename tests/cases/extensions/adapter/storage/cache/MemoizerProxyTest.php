@@ -4,7 +4,6 @@ namespace li3_memoize\tests\cases\extensions\adapter\storage\cache;
 
 use li3_memoize\extensions\Memoize;
 use li3_memoize\tests\mocks\Prose;
-use li3_memoize\tests\mocks\Speaker;
 
 class MemoizerProxyTest extends \lithium\test\Unit {
 
