@@ -60,7 +60,7 @@ class Memoize extends \lithium\core\Adaptable {
 	public static function instance($object, $class = null) {
 		$get_class = get_class($object);
 		$class = is_null($class) ? $get_class : $class;
-		$document = ($get_class == 'lithium\data\entity\Document');
+		$document = in_array($get_class, array('lithium\data\entity\Document', 'lithium\data\entity\Record'));
 		if(isset(self::$objectNames[$class])) {
 			return $document ? new DocumentMemoizerProxy($object, self::$objectNames[$class]) : new MemoizerProxy($object, self::$objectNames[$class]);
 		}
