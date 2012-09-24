@@ -24,17 +24,19 @@ class Memoize extends \lithium\core\Adaptable {
 	/**
 	 * Will add the filter for the specific $methods.
 	 * 
-	 * The namespace key is optional and will be written as "app/extensions/helper" if not provided.
-	 * 
-	 * ```php
+	 * ~~~ php
 	 * use li3_memoize\extensions\Memoize;
 	 * Memoize::add(array(
 	 * 	array(
 	 * 		'name' => 'app\extensions\helper\Prose',
 	 * 		'method' => array('init')
-	 * 	)
+	 * 	),
+	 * 	array(
+	 * 		'name' => 'app\models\Users',
+	 * 		'method' => array('name')
+	 * 	),
 	 * ));
-	 * ```
+	 * ~~~
 	 * 
 	 * @param array $methods
 	 */
