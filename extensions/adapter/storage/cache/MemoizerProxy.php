@@ -133,6 +133,16 @@ class MemoizerProxy {
 	}
 
 	/**
+	 * A to method so 'method_exists' will pass.
+	 * 
+	 * @param type $to 
+	 * @return mixed
+	 */
+	public function to($to) {
+		return method_exists($this->_object, 'to') ? $this->_object->to($to) : array();
+	}
+
+	/**
 	 * _getHash
 	 *
 	 * The current params go in, a unique hash comes out.
