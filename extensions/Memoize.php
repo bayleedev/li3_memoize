@@ -3,6 +3,7 @@
 namespace li3_memoize\extensions;
 
 use li3_memoize\extensions\adapter\storage\cache\MemoizerProxy;
+use li3_memoize\extensions\adapter\storage\cache\DocumentMemoizerProxy;
 
 /**
  * Memoize
@@ -54,12 +55,14 @@ class Memoize extends \lithium\core\Adaptable {
 	 * 
 	 * @param object $object 
 	 * @param string $class The optional param of providing the class name for us
-	 * @return object A new MemoizerProxy object or the original object
+	 * @return object A new MemoizerProxy or DocumentMemoizerProxy object or the original object
 	 */
 	public static function instance($object, $class = null) {
-		$class = is_null($class) ? get_class($object) : $class;
+		$get_class = get_class($object);
+		$class = is_null($class) ? $get_class : $class;
+		$document = !(strpos('Document', $get_class) !== false);
 		if(isset(self::$objectNames[$class])) {
-			return new MemoizerProxy($object, self::$objectNames[$class]);
+			return $document ? new DocumentMemoizerProxy($object, self::$objectNames[$class]) : new MemoizerProxy($object, self::$objectNames[$class]);
 		}
 		return $object;
 	}
