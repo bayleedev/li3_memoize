@@ -5,6 +5,8 @@ namespace li3_memoize\tests\cases\extensions;
 use li3_memoize\extensions\Memoize;
 use li3_memoize\tests\mocks\Prose;
 use li3_memoize\tests\mocks\Speaker;
+use lithium\data\entity\Document;
+use lithium\data\entity\Record;
 
 class MemoizeTest extends \lithium\test\Unit {
 
@@ -43,6 +45,30 @@ class MemoizeTest extends \lithium\test\Unit {
 	}
 	public function tearDown() {
 		$this->setVariable('objectNames', array());
+	}
+
+	public function testDocumentInstance() {
+		Memoize::add(array(
+			array(
+				'name' => 'li3_memoize\tests\mocks\Prose',
+				'method' => array('init')
+			)
+		));
+		$doc = new Document();
+		$doc = Memoize::instance($doc, 'li3_memoize\tests\mocks\Prose');
+		$this->assertEqual('li3_memoize\extensions\adapter\storage\cache\DocumentMemoizerProxy', get_class($doc));
+	}
+
+	public function testRecordInstance() {
+		Memoize::add(array(
+			array(
+				'name' => 'li3_memoize\tests\mocks\Prose',
+				'method' => array('init')
+			)
+		));
+		$doc = new Record();
+		$doc = Memoize::instance($doc, 'li3_memoize\tests\mocks\Prose');
+		$this->assertEqual('li3_memoize\extensions\adapter\storage\cache\DocumentMemoizerProxy', get_class($doc));
 	}
 
 	public function testBasicAdd() {
