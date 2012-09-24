@@ -15,7 +15,7 @@ Filters::apply('lithium\core\Libraries', 'instance', function($self, $params, $c
 	}
 
 	// Model
-	if($params['name'] == 'lithium\data\collection\RecordSet') {
+	if($params['name'] == 'lithium\data\entity\Record') {
 		$object = Memoize::instance($object, $params['options']['model']);
 	}
 
