@@ -8,7 +8,7 @@ namespace li3_memoize\extensions\adapter\storage\cache;
  * This class was developed to aid in caching expensive method calls.
  * Pass any object into the constructor and use it to directly proxy method calls.
  */
-class MemoizerProxy extends \lithium\template\Helper {
+class MemoizerProxy {
 
 	/**
 	 * This is where the results are stored.
@@ -16,22 +16,23 @@ class MemoizerProxy extends \lithium\template\Helper {
 	protected $_memoizeResults = array();
 
 	/**
-	 * A copy of the helper we are proxying
+	 * A copy of the object we are proxying
 	 */
-	protected $helper;
+	protected $_object;
 
 	/**
 	 * A list of methods that need to be filtered
 	 */
-	protected $methods = array();
+	protected $_methods = array();
 
 	/**
-	 * The constructor will accept the helper and cache it.
-	 * @param object $helper 
+	 * The constructor will accept the object and cache it.
+	 * @param object $object 
+	 * @param array $methods The methods you wish to catch
 	 */
-	public function __construct($helper, &$methods) {
-		$this->helper = $helper;
-		$this->methods = $methods;
+	public function __construct($object, &$methods) {
+		$this->_object = $object;
+		$this->_methods = $methods;
 	}
 
 	/**
@@ -46,8 +47,8 @@ class MemoizerProxy extends \lithium\template\Helper {
 	public function __call($method, $params) {
 
 		// To filter or not to filter. That is the question
-		if(!in_array($method, $this->methods)) {
-			return call_user_func_array(array($this->helper, $method), $params);
+		if(!in_array($method, $this->_methods)) {
+			return call_user_func_array(array($this->_object, $method), $params);
 		}
 
 		// Eval
@@ -64,7 +65,7 @@ class MemoizerProxy extends \lithium\template\Helper {
 		}
 
 		// Get results
-		return ($this->_memoizeResults[$method][$key] = call_user_func_array(array($this->helper, $method), $params));
+		return ($this->_memoizeResults[$method][$key] = call_user_func_array(array($this->_object, $method), $params));
 	}
 
 	/**
@@ -74,7 +75,7 @@ class MemoizerProxy extends \lithium\template\Helper {
 	 * @return mixed
 	 */
 	public function &__get($name) {
-		return $this->helper->$name;
+		return $this->_object->$name;
 	}
 
 	/**
@@ -85,7 +86,7 @@ class MemoizerProxy extends \lithium\template\Helper {
 	 * @return $value
 	 */
 	public function __set($name, $value = null) {
-		return $this->helper->$name = $value;
+		return $this->_object->$name = $value;
 	}
 
 	/**
@@ -95,7 +96,7 @@ class MemoizerProxy extends \lithium\template\Helper {
 	 * @return boolean
 	 */
 	public function __isset($name) {
-		return isset($this->helper->$name);
+		return isset($this->_object->$name);
 	}
 
 	/**
@@ -105,7 +106,7 @@ class MemoizerProxy extends \lithium\template\Helper {
 	 * @return null
 	 */
 	public function __unset($name) {
-		unset($this->helper->$name);
+		unset($this->_object->$name);
 		return null;
 	}
 
