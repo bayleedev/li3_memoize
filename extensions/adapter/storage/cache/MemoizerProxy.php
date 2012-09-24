@@ -74,10 +74,18 @@ class MemoizerProxy extends \lithium\template\Helper {
 	 *
 	 * This was put into it's own method so that it can be overwritten by your class if you'd like to improve/simplify it.
 	 *
-	 * @param mixed $data
+	 * @param array $params
 	 * @return string
 	 */
-	protected function _getHash($data) {
-		return md5(serialize(func_get_args()));
+	protected function _getHash($params) {
+		$hash = array();
+		foreach($params as &$param) {
+			if(is_object($param)) {
+				$hash[] = spl_object_hash($param);
+			} else {
+				$hash[] =& $param;
+			}
+		}
+		return md5(serialize($hash));
 	}
 }
