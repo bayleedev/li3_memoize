@@ -105,7 +105,8 @@ class MemoizerProxy extends \lithium\template\Helper {
 	 * @return null
 	 */
 	public function __unset($name) {
-		return unset($this->helper->$name);
+		unset($this->helper->$name);
+		return null;
 	}
 
 	/**
