@@ -104,4 +104,55 @@ class MemoizerProxyTest extends \lithium\test\Unit {
 		$this->assertEqual($results[0], $results[1]);
 	}
 
+	public function testGetSet() {
+		Memoize::add(array(
+			array(
+				'name' => 'li3_memoize\tests\mocks\Prose',
+				'method' => array('slowSpeak')
+			)
+		));
+		$prose = new Prose();
+		$prose = Memoize::instance($prose);
+
+		$expected = 'BlaineSch';
+
+		$prose->name = $expected;
+		$this->assertEqual($expected, $prose->name);
+	}
+
+	public function testIsset() {
+		Memoize::add(array(
+			array(
+				'name' => 'li3_memoize\tests\mocks\Prose',
+				'method' => array('slowSpeak')
+			)
+		));
+		$prose = new Prose();
+		$prose = Memoize::instance($prose);
+
+		$this->assertFalse(isset($prose->name));
+
+		$prose->name = 'BlaineSch';
+
+		$this->assertTrue(isset($prose->name));
+
+	}
+
+	public function testUnset() {
+		Memoize::add(array(
+			array(
+				'name' => 'li3_memoize\tests\mocks\Prose',
+				'method' => array('slowSpeak')
+			)
+		));
+		$prose = new Prose();
+		$prose = Memoize::instance($prose);
+
+		$expected = 'BlaineSch';
+		$prose->name = $expected;
+		unset($prose->name);
+
+		$this->assertFalse(isset($prose->name));
+	}
+
 }
