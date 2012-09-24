@@ -56,8 +56,8 @@ class Memoize extends \lithium\core\Adaptable {
 	 * @param object $object 
 	 * @return object A new MemoizerProxy object or the original object
 	 */
-	public static function instance($object) {
-		$class = get_class($object);
+	public static function instance($object, $class = null) {
+		$class = is_null($class) ? get_class($object) : $class;
 		if(isset(self::$objectNames[$class])) {
 			return new MemoizerProxy($object, self::$objectNames[$class]);
 		}
