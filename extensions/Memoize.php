@@ -52,8 +52,8 @@ class Memoize extends \lithium\core\Adaptable {
 	/**
 	 * Will proxy the given object if in the static $objectNames variable.
 	 * 
-	 * @param string $type 
 	 * @param object $object 
+	 * @param string $class The optional param of providing the class name for us
 	 * @return object A new MemoizerProxy object or the original object
 	 */
 	public static function instance($object, $class = null) {

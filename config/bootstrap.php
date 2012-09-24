@@ -4,7 +4,7 @@ use lithium\util\collection\Filters;
 use li3_memoize\extensions\Memoize;
 
 /**
- * Filters the creation of helpers and passes them into Memoize::instance
+ * Filters the creation of helpers/models and passes them into Memoize::instance
  */
 echo 'hello world';
 Filters::apply('lithium\core\Libraries', 'instance', function($self, $params, $chain) {
