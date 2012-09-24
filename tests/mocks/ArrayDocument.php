@@ -2,43 +2,46 @@
 
 namespace li3_memoize\tests\mocks;
 
-class AraryDocument implements \Iterator, \ArrayAccess {
+class ArrayDocument implements \Iterator, \ArrayAccess {
 
-	protected $items = array();
+	public $items = array();
+	public $position;
 
 	/**
 	 * Iterator::current — Return the current element
 	 */
 	public function current() {
-		return current($this->items);
+		return $this->items[$this->position];
 	}
 
 	/**
 	 * Iterator::key — Return the key of the current element
 	 */
 	public function key() {
-		return key($this->items);
+		return $this->position;
 	}
 
 	/**
 	 * Iterator::next — Move forward to next element
 	 */
 	public function next() {
-		return next($this->items);
+		++$this->position;
+		return null;
 	}
 
 	/**
 	 * Iterator::rewind — Rewind the Iterator to the first element
 	 */
 	public function rewind() {
-		return rewind($this->items);
+		$this->position = 0;
+		return null;
 	}
 
 	/**
 	 * Iterator::valid — Checks if current position is valid
 	 */
 	public function valid() {
-		return isset($this->items[$this->key()]);
+		return isset($this->items[$this->position]);
 	}
 
 	/**

@@ -10,19 +10,38 @@ class DocumentMemoizerProxyTest extends \lithium\test\Unit {
 
 	protected $class = "li3_memoize\\extensions\\adapter\\storage\\cache\\DocumentMemoizerProxy";
 
-	public function testGetProxy() {
-
+	public function setUp() {
+		$methods = array();
+		$this->arr = new DocumentMemoizerProxy(new ArrayDocument, $methods);
 	}
 
-	public function testGetDocument() {
-		
+	public function testGetSet() {
+		$this->arr[0] = 'name';
+		$this->arr['name'] = 'BlaineSch';
+		$this->assertEqual('name', $this->arr[0]);
+		$this->assertEqual('BlaineSch', $this->arr['name']);
 	}
 
-	public function testCurrent() {
-		$arr = new DocumentMemoizerProxy(new ArrayDocument);
-		$arr[0] = 'name';
-		$arr[1] = 'gender';
-		$arr['name']  = 'Blaine';
-		$this->assertEqual(0, current($arr));
+	public function testIsset() {
+		$this->assertFalse(isset($this->arr[0]));
+		$this->arr[0] = 'name';
+		$this->assertTrue(isset($this->arr[0]));
+	}
+
+	public function testUnset() {
+		$this->arr[0] = 'name';
+		$this->assertTrue(isset($this->arr[0]));
+		unset($this->arr[0]);
+		$this->assertFalse(isset($this->arr[0]));
+	}
+
+	public function testIteration() {
+		$expected = array('name', 'gender', 'location');
+		$this->arr[0] = 'name';
+		$this->arr[1] = 'gender';
+		$this->arr[2] = 'location';
+		foreach($this->arr as $key => $value) {
+			$this->assertEqual($expected[$key], $value);
+		}
 	}
 }
