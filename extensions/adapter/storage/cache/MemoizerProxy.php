@@ -65,7 +65,29 @@ class MemoizerProxy {
 		}
 
 		// Get results
-		return ($this->_memoizeResults[$method][$key] = call_user_func_array(array($this->_object, $method), $params));
+		switch (count($params)) {
+			case 0:
+				$this->_memoizeResults[$method][$key] = $this->_object->{$method}();
+				break;
+			case 1:
+				$this->_memoizeResults[$method][$key] = $this->_object->{$method}($params[0]);
+				break;
+			case 2:
+				$this->_memoizeResults[$method][$key] = $this->_object->{$method}($params[0], $params[1]);
+				break;
+			case 3:
+				$this->_memoizeResults[$method][$key] = $this->_object->{$method}($params[0], $params[1], $params[2]);
+				break;
+			case 4:
+				$this->_memoizeResults[$method][$key] = $this->_object->{$method}($params[0], $params[1], $params[2], $params[3]);
+				break;
+			case 5:
+				$this->_memoizeResults[$method][$key] = $this->_object->{$method}($params[0], $params[1], $params[2], $params[3], $params[4]);
+				break;
+			default:
+				$this->_memoizeResults[$method][$key] = call_user_func_array(array(&$this->_object, $method), $params);
+		}
+		return $this->_memoizeResults[$method][$key];
 	}
 
 	/**
