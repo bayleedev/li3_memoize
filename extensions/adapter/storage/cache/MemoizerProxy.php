@@ -68,6 +68,47 @@ class MemoizerProxy extends \lithium\template\Helper {
 	}
 
 	/**
+	 * Will get the variable from the object.
+	 * 
+	 * @param string $name 
+	 * @return mixed
+	 */
+	public function &__get($name) {
+		return $this->helper->$name;
+	}
+
+	/**
+	 * Will set a variable from the object.
+	 * 
+	 * @param string $name 
+	 * @param mixed $value 
+	 * @return $value
+	 */
+	public function __set($name, $value = null) {
+		return $this->helper->$name = $value;
+	}
+
+	/**
+	 * Will check if $name is set on the object
+	 * 
+	 * @param string $name 
+	 * @return boolean
+	 */
+	public function __isset($name) {
+		return isset($this->helper->$name);
+	}
+
+	/**
+	 * Will unset the variable $name on the object
+	 * 
+	 * @param string $name
+	 * @return null
+	 */
+	public function __unset($name) {
+		return unset($this->helper->$name);
+	}
+
+	/**
 	 * _getHash
 	 *
 	 * The current params go in, a unique hash comes out.
