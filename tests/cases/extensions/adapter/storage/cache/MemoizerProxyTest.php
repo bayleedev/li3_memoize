@@ -30,7 +30,7 @@ class MemoizerProxyTest extends \lithium\test\Unit {
 		$prose = new Prose();
 		$prose = Memoize::instance($prose);
 
-		$methods = $this->getVariables($prose, 'methods');
+		$methods = $this->getVariables($prose, '_methods');
 
 		$this->assertEqual(array('slowSpeak'), $methods);
 	}
