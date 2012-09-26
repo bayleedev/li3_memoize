@@ -16,7 +16,7 @@ class RecordTest extends \lithium\test\Unit {
 		Connections::add('default', array(
 			'type' => 'database',
 			'adapter' => 'Sqlite3',
-			'database' => LITHIUM_APP_PATH . '/app/libraries/li3_memoize/tests/mocks/sqlite.db'
+			'database' => LITHIUM_APP_PATH . '/tests/mocks/sqlite.db'
 		));
 	}
 	public function tearDown() {
