@@ -58,14 +58,15 @@ class Memoize {
 	 * 
 	 * @param object $object 
 	 * @param string $class The optional param of providing the class name for us
-	 * @return object A new Helper proxy or the original object
+	 * @return null
 	 */
 	public static function catchHelper(&$object) {
 		$class = get_class($object);
 		if(isset(self::$objectNames[$class])) {
-			return new Helper($object);
+			$object = Helper($object, self::$objectNames[$class]);
+			return;
 		}
-		return $object;
+		return null;
 	}
 
 	/**
