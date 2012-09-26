@@ -4,9 +4,6 @@ namespace li3_memoize\tests\cases\extensions;
 
 use li3_memoize\extensions\Memoize;
 use li3_memoize\tests\mocks\Prose;
-use li3_memoize\tests\mocks\Speaker;
-use lithium\data\entity\Document;
-use lithium\data\entity\Record;
 
 class MemoizeTest extends \lithium\test\Unit {
 
