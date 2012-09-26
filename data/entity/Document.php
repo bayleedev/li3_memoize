@@ -4,7 +4,7 @@ namespace li3_memoize\data\entity;
 
 use li3_memoize\extensions\Memoize;
 
-class Document extends lithium\data\entity\Document {
+class Document extends \lithium\data\entity\Document {
 
 	/**
 	 * This is where the results are stored.
