@@ -7,12 +7,8 @@ use li3_memoize\tests\mocks\Prose;
 
 class MemoizeTest extends \lithium\test\Unit {
 
-	protected $class = "li3_memoize\\extensions\\Memoize";
-	protected $reflectionClass;
+	public $class = "li3_memoize\\extensions\\Memoize";
 
-	/**
-	 * Will setup/tear down the current object
-	 */
 	public function setUp() {
 		$result = Memoize::$objectNames = array();
 	}
