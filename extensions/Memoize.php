@@ -2,8 +2,9 @@
 
 namespace li3_memoize\extensions;
 
-use li3_memoize\extensions\adapter\storage\cache\MemoizerProxy;
-use li3_memoize\extensions\adapter\storage\cache\DocumentMemoizerProxy;
+use li3_memoize\data\entity\Document;
+use li3_memoize\data\entity\Record;
+use li3_memoize\template\Helper;
 
 /**
  * Memoize
@@ -57,12 +58,12 @@ class Memoize {
 	 * 
 	 * @param object $object 
 	 * @param string $class The optional param of providing the class name for us
-	 * @return object A new MemoizerProxy or DocumentMemoizerProxy object or the original object
+	 * @return object A new Helper proxy or the original object
 	 */
 	public static function catchHelper(&$object) {
 		$class = get_class($object);
 		if(isset(self::$objectNames[$class])) {
-			return new MemoizerProxy($object, self::$objectNames[$class]);
+			return new Helper($object, self::$objectNames[$class]);
 		}
 		return $object;
 	}
