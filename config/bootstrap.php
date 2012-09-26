@@ -17,7 +17,7 @@ Filters::apply('lithium\core\Libraries', 'instance', function($self, $params, $c
 
 	// Postscan Helper
 	if($params['type'] == 'helper') {
-		Memoize::catchHelper($self, $params, $chain);
+		Memoize::catchHelper($object);
 	}
 
 	return $object;
