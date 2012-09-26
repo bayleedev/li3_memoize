@@ -15,12 +15,8 @@ class RecordTest extends \lithium\test\Unit {
 		$result = Memoize::$objectNames = array();
 		Connections::add('default', array(
 			'type' => 'database',
-			'adapter' => 'MySql',
-			'host' => 'localhost',
-			'login' => 'root',
-			'password' => '',
-			'database' => '',
-			'encoding' => 'UTF-8'
+			'adapter' => 'Sqlite',
+			'database' => LITHIUM_APP_PATH . '/app/libraries/li3_memoize/tests/mocks/sqlite.db'
 		));
 	}
 	public function tearDown() {
