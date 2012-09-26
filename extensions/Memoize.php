@@ -66,4 +66,44 @@ class Memoize {
 		}
 		return $object;
 	}
+
+	/**
+	 * Will prefilter the model by telling it to use a new entity class.
+	 * 
+	 * @param object $self
+	 * @param array $params
+	 * @param object $chain
+	 * @return null
+	 */
+	public static function catchModel(&$self, &$params, &$chain) {
+		$class = $params['options']['model'];
+		if(isset(self::$objectNames[$class])) {
+			if($params['name'] == 'lithium\data\entity\Document') {
+				$params['name'] = 'li3_memoize\data\entity\Document';
+			} else if($param['name'] == 'lithium\data\entity\Record') {
+				$params['name'] = 'li3_memoize\data\entity\Record';
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * hashArgs
+	 *
+	 * The current params go in, a unique hash comes out.
+	 *
+	 * @param array $params
+	 * @return string
+	 */
+	public static function hashArgs($params) {
+		$hash = array();
+		foreach($params as &$param) {
+			if(is_object($param)) {
+				$hash[] = spl_object_hash($param);
+			} else {
+				$hash[] =& $param;
+			}
+		}
+		return md5(serialize($hash));
+	}
 }
