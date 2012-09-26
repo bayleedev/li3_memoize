@@ -63,7 +63,7 @@ class Memoize {
 	public static function catchHelper(&$object) {
 		$class = get_class($object);
 		if(isset(self::$objectNames[$class])) {
-			return new Helper($object, self::$objectNames[$class]);
+			return new Helper($object);
 		}
 		return $object;
 	}

@@ -23,18 +23,12 @@ class Helper extends \lithium\template\Helper {
 	protected $_object;
 
 	/**
-	 * A list of methods that need to be filtered
-	 */
-	protected $_methods = array();
-
-	/**
 	 * The constructor will accept the object and cache it.
 	 * @param object $object 
-	 * @param array $methods The methods you wish to catch
 	 */
-	public function __construct($object, &$methods) {
+	public function __construct($object) {
 		$this->_object = $object;
-		$this->_methods = $methods;
+		$this->_objectName = get_class($object);
 	}
 
 	/**
@@ -49,7 +43,7 @@ class Helper extends \lithium\template\Helper {
 	public function __call($method, $params) {
 
 		// To filter or not to filter. That is the question
-		if(!in_array($method, $this->_methods)) {
+		if(!in_array($method, Memoize::$objectNames[$this->_objectName])) {
 			return call_user_func_array(array($this->_object, $method), $params);
 		}
 
