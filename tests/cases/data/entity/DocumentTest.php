@@ -15,7 +15,7 @@ class DocumentTest extends \lithium\test\Unit {
 		$result = Memoize::$objectNames = array();
 		Connections::add('default', array(
 			'type' => 'database',
-			'adapter' => 'SQLite3',
+			'adapter' => 'Sqlite3',
 			'database' => LITHIUM_APP_PATH . '/app/libraries/li3_memoize/tests/mocks/sqlite.db'
 		));
 	}
