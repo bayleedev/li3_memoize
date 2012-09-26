@@ -14,61 +14,13 @@ class MemoizeTest extends \lithium\test\Unit {
 	protected $reflectionClass;
 
 	/**
-	 * Will return the protected/private variables
-	 */
-	protected function getVariable($name) {
-		if(!isset($this->reflectionClass)) {
-			$this->reflectionClass = new \ReflectionClass($this->class);
-		}
-		$prop = $this->reflectionClass->getProperty($name);
-		$prop->setAccessible(true);
-		return $prop->getValue($this->reflectionClass);
-	}
-
-	/**
-	 * Will update the protected/private variables
-	 */
-	protected function setVariable($name, $value) {
-		if(!isset($this->reflectionClass)) {
-			$this->reflectionClass = new \ReflectionClass($this->class);
-		}
-		$prop = $this->reflectionClass->getProperty($name);
-		$prop->setAccessible(true);
-		return $prop->setValue($this->reflectionClass, $value);
-	}
-
-	/**
 	 * Will setup/tear down the current object
 	 */
 	public function setUp() {
-		$this->tearDown();
+		$result = Memoize::$objectNames = array();
 	}
 	public function tearDown() {
-		$this->setVariable('objectNames', array());
-	}
-
-	public function testDocumentInstance() {
-		Memoize::add(array(
-			array(
-				'name' => 'li3_memoize\tests\mocks\Prose',
-				'method' => array('init')
-			)
-		));
-		$doc = new Document();
-		$doc = Memoize::instance($doc, 'li3_memoize\tests\mocks\Prose');
-		$this->assertEqual('li3_memoize\extensions\adapter\storage\cache\DocumentMemoizerProxy', get_class($doc));
-	}
-
-	public function testRecordInstance() {
-		Memoize::add(array(
-			array(
-				'name' => 'li3_memoize\tests\mocks\Prose',
-				'method' => array('init')
-			)
-		));
-		$doc = new Record();
-		$doc = Memoize::instance($doc, 'li3_memoize\tests\mocks\Prose');
-		$this->assertEqual('li3_memoize\extensions\adapter\storage\cache\DocumentMemoizerProxy', get_class($doc));
+		$result = Memoize::$objectNames = array();
 	}
 
 	public function testBasicAdd() {
@@ -78,7 +30,7 @@ class MemoizeTest extends \lithium\test\Unit {
 				'method' => array('init')
 			)
 		));
-		$result = $this->getVariable('objectNames');
+		$result = Memoize::$objectNames;
 		$this->assertEqual(array(
 			'li3_memoize\tests\mocks\Prose' => array(
 				'init'
@@ -97,7 +49,7 @@ class MemoizeTest extends \lithium\test\Unit {
 				'method' => array('list')
 			)
 		));
-		$result = $this->getVariable('objectNames');
+		$result = Memoize::$objectNames;
 		$this->assertEqual(array(
 			'li3_memoize\tests\mocks\Prose' => array(
 				'init', 'list'
@@ -118,7 +70,7 @@ class MemoizeTest extends \lithium\test\Unit {
 				'method' => array('list')
 			)
 		));
-		$result = $this->getVariable('objectNames');
+		$result = Memoize::$objectNames;
 		$this->assertEqual(array(
 			'li3_memoize\tests\mocks\Prose' => array(
 				'init', 'list'
@@ -126,15 +78,15 @@ class MemoizeTest extends \lithium\test\Unit {
 		), $result);
 	}
 
-	public function testNonFilteredInstance() {
+	public function testNonHelper() {
 		// Should not be filtered so same class should be returned
 		$prose = new Prose();
 		$oldClass = get_class($prose);
-		$prose = Memoize::instance($prose);
+		$prose = Memoize::catchHelper($prose);
 		$this->assertEqual($oldClass, get_class($prose));
 	}
 
-	public function testFilteredInstance() {
+	public function testHelper() {
 		Memoize::add(array(
 			array(
 				'name' => 'li3_memoize\tests\mocks\Prose',
@@ -143,7 +95,109 @@ class MemoizeTest extends \lithium\test\Unit {
 		));
 		$prose = new Prose();
 		$oldClass = get_class($prose);
-		$prose = Memoize::instance($prose);
+		$prose = Memoize::catchHelper($prose);
 		$this->assertNotEqual($oldClass, get_class($prose));
+	}
+
+	public function testModelDocument() {
+		Memoize::add(array(
+			array(
+				'name' => 'li3_memoize\tests\mocks\Prose',
+				'method' => array('slowSpeak')
+			)
+		));
+		$request = array(
+			'name' = 'lithium\data\entity\Document',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$expected = array(
+			'name' = 'li3_memoize\data\entity\Document',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+	}
+
+	public function testModelRecord() {
+		$request = array(
+			'name' = 'lithium\data\entity\Record',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$expected = array(
+			'name' = 'li3_memoize\data\entity\Record',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+	}
+
+	public function testNonModelDocument() {
+		$request = array(
+			'name' = 'lithium\data\entity\Document',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$expected = array(
+			'name' = 'lithium\data\entity\Document',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+	}
+
+	public function testNonModelRecord() {
+		$request = array(
+			'name' = 'lithium\data\entity\Record',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$expected = array(
+			'name' = 'lithium\data\entity\Record',
+			'options' => array(
+				'model' = 'li3_memoize\tests\mocks\Prose'
+			)
+		);
+		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+	}
+
+	public function testSameHashArgs() {
+		$args = array(
+			'String',
+			35,
+			M_PI,
+			new stdClass
+		);
+		$expected = Memoize::hashArgs($args);
+		$results = Memoize::hashArgs($args);
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testDifferentHashArgs() {
+		$objs = array(
+			new stdClass,
+			new stdClass
+		);
+		$first = Memoize::hashArgs(array(
+			'String',
+			35,
+			M_PI,
+			$objs[0]
+		));
+		$second = Memoize::hashArgs(array(
+			'String',
+			35,
+			M_PI,
+			$objs[1]
+		));
+		$this->assertEqual($first, $second);
 	}
 }
