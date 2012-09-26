@@ -23,6 +23,11 @@ class Helper extends \lithium\template\Helper {
 	protected $_object;
 
 	/**
+	 * An instance of the full namespaced helper name
+	 */
+	protected $_objectName;
+
+	/**
 	 * The constructor will accept the object and cache it.
 	 * @param object $object 
 	 */
