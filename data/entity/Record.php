@@ -12,19 +12,6 @@ class Record extends \lithium\data\entity\Record {
 	protected $_memoizeResults = array();
 
 	/**
-	 * A list of methods that need to be filtered
-	 */
-	protected $_methods = array();
-
-	/**
-	 * Will construct a list of methods to filter
-	 */
-	protected function _init() {
-		parent::_init();
-		$this->_methods =& Memoize::$objectNames[$this->_model];
-	}
-
-	/**
 	 * __call
 	 *
 	 * The heart of the RecordProxy. The method and params go in, the result is then cached and servered next time.
@@ -35,7 +22,7 @@ class Record extends \lithium\data\entity\Record {
 	 */
 	public function __call($method, $params) {
 		// Is filterable?
-		if(!isset($this->_methods[$method])) {
+		if(!in_array($method, Memoize::$objectNames[$this->_model])) {
 			return parent::__call($method, $params);
 		}
 
@@ -48,11 +35,11 @@ class Record extends \lithium\data\entity\Record {
 		}
 
 		// Check if method + params have been ran already
-		if(isset($this->_memoizeResults[$method][$key])) {
-			return $this->_memoizeResults[$method][$key];
+		if(isset($this->_memoizeResults[$method][$hash])) {
+			return $this->_memoizeResults[$method][$hash];
 		}
 
 		// Set and return
-		return ($this->_memoizeResults[$method][$key] = parent::__call($method, $params));
+		return ($this->_memoizeResults[$method][$hash] = parent::__call($method, $params));
 	}
 }
