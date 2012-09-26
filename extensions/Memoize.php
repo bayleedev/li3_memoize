@@ -59,7 +59,7 @@ class Memoize {
 	 * @param string $class The optional param of providing the class name for us
 	 * @return object A new MemoizerProxy or DocumentMemoizerProxy object or the original object
 	 */
-	public static function catchHelper($object) {
+	public static function catchHelper(&$object) {
 		$class = get_class($object);
 		if(isset(self::$objectNames[$class])) {
 			return new MemoizerProxy($object, self::$objectNames[$class]);
@@ -80,7 +80,7 @@ class Memoize {
 		if(isset(self::$objectNames[$class])) {
 			if($params['name'] == 'lithium\data\entity\Document') {
 				$params['name'] = 'li3_memoize\data\entity\Document';
-			} else if($param['name'] == 'lithium\data\entity\Record') {
+			} else if($params['name'] == 'lithium\data\entity\Record') {
 				$params['name'] = 'li3_memoize\data\entity\Record';
 			}
 		}
