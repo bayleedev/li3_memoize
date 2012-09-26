@@ -57,13 +57,13 @@ class Memoize {
 	 * Will proxy the given helper if in the static $objectNames variable.
 	 * 
 	 * @param object $object 
-	 * @param string $class The optional param of providing the class name for us
+	 * @param string $class The optional paramgetVariable of providing the class name for us
 	 * @return null
 	 */
 	public static function catchHelper(&$object) {
 		$class = get_class($object);
 		if(isset(self::$objectNames[$class])) {
-			$object = Helper($object, self::$objectNames[$class]);
+			$object = new Helper($object, self::$objectNames[$class]);
 			return;
 		}
 		return null;
