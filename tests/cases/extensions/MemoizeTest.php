@@ -75,7 +75,7 @@ class MemoizeTest extends \lithium\test\Unit {
 		// Should not be filtered so same class should be returned
 		$prose = new Prose();
 		$oldClass = get_class($prose);
-		$prose = Memoize::catchHelper($prose);
+		Memoize::catchHelper($prose);
 		$this->assertEqual($oldClass, get_class($prose));
 	}
 
@@ -88,7 +88,7 @@ class MemoizeTest extends \lithium\test\Unit {
 		));
 		$prose = new Prose();
 		$oldClass = get_class($prose);
-		$prose = Memoize::catchHelper($prose);
+		Memoize::catchHelper($prose);
 		$this->assertNotEqual($oldClass, get_class($prose));
 	}
 
@@ -100,66 +100,76 @@ class MemoizeTest extends \lithium\test\Unit {
 			)
 		));
 		$request = array(
-			'name' = 'lithium\data\entity\Document',
+			'name' => 'lithium\data\entity\Document',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
 		$expected = array(
-			'name' = 'li3_memoize\data\entity\Document',
+			'name' => 'li3_memoize\data\entity\Document',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
-		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+		Memoize::catchModel($this, $request, $this);
+		$this->assertEqual($expected, $request);
 	}
 
 	public function testModelRecord() {
+		Memoize::add(array(
+			array(
+				'name' => 'li3_memoize\tests\mocks\Prose',
+				'method' => array('slowSpeak')
+			)
+		));
 		$request = array(
-			'name' = 'lithium\data\entity\Record',
+			'name' => 'lithium\data\entity\Record',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
 		$expected = array(
-			'name' = 'li3_memoize\data\entity\Record',
+			'name' => 'li3_memoize\data\entity\Record',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
-		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+		Memoize::catchModel($this, $request, $this);
+		$this->assertEqual($expected, $request);
 	}
 
 	public function testNonModelDocument() {
 		$request = array(
-			'name' = 'lithium\data\entity\Document',
+			'name' => 'lithium\data\entity\Document',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
 		$expected = array(
-			'name' = 'lithium\data\entity\Document',
+			'name' => 'lithium\data\entity\Document',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
-		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+		Memoize::catchModel($this, $request, $this);
+		$this->assertEqual($expected, $request);
 	}
 
 	public function testNonModelRecord() {
 		$request = array(
-			'name' = 'lithium\data\entity\Record',
+			'name' => 'lithium\data\entity\Record',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
 		$expected = array(
-			'name' = 'lithium\data\entity\Record',
+			'name' => 'lithium\data\entity\Record',
 			'options' => array(
-				'model' = 'li3_memoize\tests\mocks\Prose'
+				'model' => 'li3_memoize\tests\mocks\Prose'
 			)
 		);
-		$this->assertEqual($expected, Memoize::catchModel($his, $request), $this);
+		Memoize::catchModel($this, $request, $this);
+		$this->assertEqual($expected, $request);
 	}
 
 	public function testSameHashArgs() {
@@ -167,17 +177,17 @@ class MemoizeTest extends \lithium\test\Unit {
 			'String',
 			35,
 			M_PI,
-			new stdClass
+			new \stdClass
 		);
 		$expected = Memoize::hashArgs($args);
 		$results = Memoize::hashArgs($args);
-		$this->assertEqual($expected, $result);
+		$this->assertEqual($expected, $results);
 	}
 
 	public function testDifferentHashArgs() {
 		$objs = array(
-			new stdClass,
-			new stdClass
+			new \stdClass,
+			new \stdClass
 		);
 		$first = Memoize::hashArgs(array(
 			'String',
@@ -191,6 +201,6 @@ class MemoizeTest extends \lithium\test\Unit {
 			M_PI,
 			$objs[1]
 		));
-		$this->assertEqual($first, $second);
+		$this->assertNotEqual($first, $second);
 	}
 }
