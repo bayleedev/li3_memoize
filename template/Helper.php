@@ -10,7 +10,7 @@ use li3_memoize\extensions\Memoize;
  * This class was developed to aid in caching expensive method calls.
  * Pass any object into the constructor and use it to directly proxy method calls.
  */
-class Helper extends lithium\template\Helper {
+class Helper extends \lithium\template\Helper {
 
 	/**
 	 * This is where the results are stored.
