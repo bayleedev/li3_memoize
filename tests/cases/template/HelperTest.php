@@ -17,7 +17,8 @@ class HelperTest extends \lithium\test\Unit {
 				'method' => array('init')
 			)
 		));
-		$prose = Memoize::catchHelper(new Prose);
+		$prose = new Prose;
+		Memoize::catchHelper($prose);
 		$prose->name = $name;
 		$this->assertEqual($name, $prose->name);
 	}
@@ -29,7 +30,8 @@ class HelperTest extends \lithium\test\Unit {
 				'method' => array('init')
 			)
 		));
-		$prose = Memoize::catchHelper(new Prose);
+		$prose = new Prose;
+		Memoize::catchHelper($prose);
 		$this->assertFalse(isset($prose->name));
 		$prose->name = 'lithium';
 		$this->assertTrue(isset($prose->name));
@@ -42,7 +44,8 @@ class HelperTest extends \lithium\test\Unit {
 				'method' => array('init')
 			)
 		));
-		$prose = Memoize::catchHelper(new Prose);
+		$prose = new Prose;
+		Memoize::catchHelper($prose);
 		$prose->name = 'lithium';
 		$this->assertTrue(isset($prose->name));
 		unset($prose->name);
@@ -54,7 +57,7 @@ class HelperTest extends \lithium\test\Unit {
 		Memoize::add(array(
 			array(
 				'name' => 'li3_memoize\tests\mocks\Prose',
-				'method' => array('speak')
+				'method' => array('slowSpeak')
 			)
 		));
 
@@ -67,11 +70,11 @@ class HelperTest extends \lithium\test\Unit {
 
 		$times[0] = microtime(true);
 
-		$results[0] = $prose->speak('lithium');
+		$results[0] = $prose->slowSpeak('lithium');
 
 		$times[1] = microtime(true);
 
-		$results[0] = $prose->speak('lithium');
+		$results[1] = $prose->slowSpeak('lithium');
 
 		$times[2] = microtime(true);
 
@@ -103,11 +106,11 @@ class HelperTest extends \lithium\test\Unit {
 
 		$times[0] = microtime(true);
 
-		$results[0] = $prose->speak('lithium');
+		$results[0] = $prose->slowSpeak('lithium');
 
 		$times[1] = microtime(true);
 
-		$results[0] = $prose->speak('lithium');
+		$results[1] = $prose->slowSpeak('lithium');
 
 		$times[2] = microtime(true);
 
