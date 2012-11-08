@@ -6,15 +6,29 @@ Will aid in the caching of expensive helper/model instance methods.
 
 ## Installation
 
-__Submodule__
+### Composer
+~~~ json
+{
+    "require": {
+        ...
+        "blainesch/li3_memoize": "dev-master"
+        ...
+    }
+}
+~~~
+~~~ bash
+php composer.phar install
+~~~
 
-From the root of your app run `git submodule add git://github.com/BlaineSch/li3_memoize.git libraries/li3_memoize`
+### Submodule
+~~~ bash
+git submodule add git://github.com/BlaineSch/li3_memoize.git libraries/li3_memoize
+~~~
 
-***
-
-__Clone Directly__
-
-From your apps `libraries` directory run `git clone git://github.com/BlaineSch/li3_memoize.git`
+### Clone Directly
+~~~ bash
+git clone git://github.com/BlaineSch/li3_memoize.git libraries/li3_memoize
+~~~
 
 ## Usage
 

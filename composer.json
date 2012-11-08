@@ -1,0 +1,15 @@
+{
+	"name": "blainesch/li3_memoize",
+	"type": "lithium-library",
+	"description": "Will aid in the caching of expensive helper/model instance methods.",
+	"keywords": ["lithium", "li3", "speed", "cache", "proxy", "memoize"],
+	"homepage": "https://github.com/BlaineSch/li3_memoize",
+	"license": "The BSD License",
+	"authors": [
+		{
+			"name": "Blaine Schmeisser",
+			"email": "BlaineSch@gmail.com",
+			"homepage": "https://github.com/BlaineSch"
+		}
+	]
+}
